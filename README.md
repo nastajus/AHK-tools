@@ -17,6 +17,7 @@ Small AutoHotkey v2 scripts I use for mouse chords, one-handed dictation, focus 
 - `beepsOnenote.ahk`: focus timer beeps while OneNote is active.
 - `beepsYoutube.ahk`: playback timer beeps for YouTube.
 - `beepsVSCode.ahk`: focus timer beeps while VS Code is active.
+- `vscodeVignetteOveruse.ahk`: experimental click-through edge vignette that ramps with VS Code focus time.
 - `RunCaffeinateWhenOverdrive.ahk`: runs caffeine while OverDrive is active.
 - `ScrollZoomWindows.ahk`: RButton + wheel zooms Windows.
 - `MultiMonitorToggle_stateful.ahk`: Ctrl+Alt+M toggles the primary display.
