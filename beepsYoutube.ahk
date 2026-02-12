@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
-A_IconTip := "YouTube Play Timer Running"
+A_IconTip := "YouTube Play Timer"
 
 ; ===== SETTINGS =====
 beepEveryMs := 900000        ; 15 minutes
@@ -9,7 +9,8 @@ pollMs      := 250           ; check 4x/sec
 beepFreq    := 1400          ; higher pitch
 beepDurMs   := 250           ; short beep
 
-playingNeedle := "[YT ▶ PLAYING]"
+playingNeedleA := "YT"
+playingNeedleB := "PLAYING"
 asmrNeedle    := "ASMR"      ; case-insensitive match
 
 browserExeList := ["chrome.exe", "msedge.exe", "firefox.exe", "brave.exe"]
@@ -19,35 +20,36 @@ timerOn   := true
 elapsedMs := 0
 
 SetTimer(Tick, pollMs)
+UpdateStatusIconTip(false, elapsedMs, beepEveryMs)
 
 Tick() {
     global timerOn, elapsedMs
     global beepEveryMs, pollMs, beepFreq, beepDurMs
-    global playingNeedle, asmrNeedle, browserExeList
+    global playingNeedleA, playingNeedleB, asmrNeedle, browserExeList
 
-    if !timerOn
-        return
+    isPlaying := false
 
-    info := GetActiveBrowserTitle(browserExeList)
-    if !info.ok
-        return
+    if timerOn {
+        info := GetActiveBrowserTitle(browserExeList)
+        if info.ok {
+            title := info.title
 
-    title := info.title
-
-    ; ---- HARD RESET RULE ----
-    if InStr(title, asmrNeedle, false) { ; case-insensitive
-        elapsedMs := 0
-        return
-    }
-
-    ; ---- NORMAL PLAYBACK COUNTING ----
-    if InStr(title, playingNeedle, true) {
-        elapsedMs += pollMs
-        if (elapsedMs >= beepEveryMs) {
-            elapsedMs := 0
-            SoundBeep(beepFreq, beepDurMs)
+            ; ---- HARD RESET RULE ----
+            if InStr(title, asmrNeedle, false) { ; case-insensitive
+                elapsedMs := 0
+            } else if (InStr(title, playingNeedleA, true) && InStr(title, playingNeedleB, true)) {
+                ; ---- NORMAL PLAYBACK COUNTING ----
+                isPlaying := true
+                elapsedMs += pollMs
+                if (elapsedMs >= beepEveryMs) {
+                    elapsedMs := 0
+                    SoundBeep(beepFreq, beepDurMs)
+                }
+            }
         }
     }
+
+    UpdateStatusIconTip(isPlaying, elapsedMs, beepEveryMs)
 }
 
 GetActiveBrowserTitle(exeList) {
@@ -82,11 +84,29 @@ IsInListCI(list, value) {
 ^+q::ToggleTimer()
 
 ToggleTimer() {
-    global timerOn
+    global timerOn, elapsedMs, beepEveryMs
     timerOn := !timerOn
     TrayTip(
         "YouTube Timer",
         timerOn ? "Running" : "Paused (manual)",
         2
     )
+
+    UpdateStatusIconTip(false, elapsedMs, beepEveryMs)
+}
+
+UpdateStatusIconTip(isPlaying, elapsedMs, intervalMs) {
+    symbol := isPlaying ? "▶" : "⏸"
+    remainingMs := Max(intervalMs - elapsedMs, 0)
+    A_IconTip := "YouTube Play Timer`n" symbol " | " FormatDurationMs(elapsedMs) " | " FormatDurationMs(remainingMs)
+}
+
+FormatDurationMs(ms) {
+    totalSeconds := Floor(ms / 1000)
+    hours := Floor(totalSeconds / 3600)
+    minutes := Floor(Mod(totalSeconds, 3600) / 60)
+    seconds := Mod(totalSeconds, 60)
+    if (hours > 0)
+        return Format("{1:02}:{2:02}:{3:02}", hours, minutes, seconds)
+    return Format("{1:02}:{2:02}", minutes, seconds)
 }
