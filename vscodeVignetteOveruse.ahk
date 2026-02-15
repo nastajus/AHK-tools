@@ -88,17 +88,17 @@ InitOverlays() {
         weight := ((steps - step + 1) / steps) ** 2
 
         ; Top edge band
-        AddOverlay(overlays, left + inset, top + inset, width - 2 * inset, thick, weight)
+        AddOverlay(&overlays, left + inset, top + inset, width - 2 * inset, thick, weight)
         ; Bottom edge band
-        AddOverlay(overlays, left + inset, top + height - inset - thick, width - 2 * inset, thick, weight)
+        AddOverlay(&overlays, left + inset, top + height - inset - thick, width - 2 * inset, thick, weight)
         ; Left edge band (excluding corners to reduce double-darkening)
-        AddOverlay(overlays, left + inset, top + inset + thick, thick, height - 2 * (inset + thick), weight)
+        AddOverlay(&overlays, left + inset, top + inset + thick, thick, height - 2 * (inset + thick), weight)
         ; Right edge band
-        AddOverlay(overlays, left + width - inset - thick, top + inset + thick, thick, height - 2 * (inset + thick), weight)
+        AddOverlay(&overlays, left + width - inset - thick, top + inset + thick, thick, height - 2 * (inset + thick), weight)
     }
 }
 
-AddOverlay(ByRef arr, x, y, w, h, weight) {
+AddOverlay(&arr, x, y, w, h, weight) {
     if (w <= 0 || h <= 0)
         return
 
@@ -125,7 +125,7 @@ UpdateVignette(intensity) {
 }
 
 UpdateStatusIconTip(isFocused, elapsedMs, rampMs, intensity) {
-    symbol := isFocused ? "?" : "?"
+    symbol := isFocused ? "▶" : "⏸"
     remainingMs := Max(rampMs - elapsedMs, 0)
     pct := Round(intensity * 100)
     A_IconTip := "VS Code Vignette Alert`n" symbol " | " FormatDurationMs(elapsedMs) " | " FormatDurationMs(remainingMs) " | " pct "%"
