@@ -4,7 +4,14 @@
 global gUsedWheelWhileRButton := false
 
 IsYouTubeActive() {
-    return InStr(WinGetTitle("A"), "YouTube")
+    ; Can happen after lock/unlock or desktop transitions.
+    try {
+        return InStr(WinGetTitle("A"), "YouTube")
+    } catch TargetError {
+        return false
+    } catch {
+        return false
+    }
 }
 
 DismissContextLike() {
