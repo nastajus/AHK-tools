@@ -5,7 +5,6 @@ childScripts := [
     "C:\tools\ahk\beepsOnenote.ahk",
     "C:\tools\ahk\beepsYoutube.ahk",
     "C:\tools\ahk\beepsVSCode.ahk",
-    "C:\tools\ahk\ActivityWatchWatchdog.ahk",
     ; "C:\tools\ahk\vscodeVignetteOveruse.ahk", ; experimental
     "C:\tools\ahk\MultiMonitorToggle_stateful.ahk",
     "C:\tools\ahk\MouseNavigationChords_mmb•lmb.ahk",
