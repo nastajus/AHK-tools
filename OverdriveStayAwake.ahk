@@ -44,27 +44,27 @@ WatchOverDrive() {
 IsOverDriveWindowPresent() {
     global watchExeList, needle
 
-    hwndList := WinGetList()
-    for hwnd in hwndList {
-        winSpec := "ahk_id " hwnd
+    try hwnd := WinExist("A")
+    catch
+        return false
 
-        try {
-            title := WinGetTitle(winSpec)
-            if (title = "")
-                continue
+    if !hwnd
+        return false
 
-            proc := WinGetProcessName(winSpec)
-            if !IsInListCI(watchExeList, proc)
-                continue
+    winSpec := "ahk_id " hwnd
+    try {
+        title := WinGetTitle(winSpec)
+        if (title = "")
+            return false
 
-            if InStr(title, needle, false)
-                return true
-        } catch {
-            continue
-        }
+        proc := WinGetProcessName(winSpec)
+        if !IsInListCI(watchExeList, proc)
+            return false
+
+        return InStr(title, needle, false) > 0
+    } catch {
+        return false
     }
-
-    return false
 }
 
 IsInListCI(list, value) {
