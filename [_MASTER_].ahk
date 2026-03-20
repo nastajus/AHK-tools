@@ -11,7 +11,9 @@ childScripts := [
     "C:\tools\ahk\MouseNavigationChords_mmb•lmb.ahk",
     "C:\tools\ahk\MouseNavigationOneNoteSearch_rmb,lmb.ahk",
     "C:\tools\ahk\MouseEmojiPanel.ahk",
-    "C:\tools\ahk\ScrollZoomWindows.ahk",
+    "C:\tools\ahk\SymbolHotkeys.ahk",
+    "C:\tools\ahk\StremioBoostVolume.ahk",
+    "C:\tools\ahk\MouseScrollZoom.ahk",
 
     ;; buggy
     ; "C:\tools\ahk\BetterHistory.ahk",
