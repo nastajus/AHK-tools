@@ -8,6 +8,7 @@ A_IconTip := "OneNote Focus Timer"
 beepEveryMs := 900000        ; 15 minutes
 pollMs := 250                ; how often we check focus (250ms is plenty)
 mode := "pause"              ; "pause" or "reset"
+blockingProcesses := ["Zoom.exe", "ZoomRooms.exe", "WebexHost.exe", "webex.exe", "atmgr.exe"]
 
 ; Your chosen sound:
 beepFreq := 100
@@ -24,14 +25,21 @@ UpdateStatusIconTip(false, elapsedMs, beepEveryMs)
 
 Tick() {
     global timerOn, elapsedMs, wasFocused, inactiveStartStamp
-    global beepEveryMs, pollMs, mode, beepFreq, beepDurMs
+    global beepEveryMs, pollMs, mode, beepFreq, beepDurMs, blockingProcesses
 
     if !timerOn {
-        UpdateStatusIconTip(false, elapsedMs, beepEveryMs)
+        UpdateStatusIconTip("IDLE", elapsedMs, beepEveryMs)
         return
     }
 
     focused := WinActive("ahk_exe ONENOTE.EXE")
+    isSuspended := IsBlockedByMeetingApp(blockingProcesses)
+
+    if isSuspended {
+        UpdateStatusIconTip("SUSPEND", elapsedMs, beepEveryMs)
+        wasFocused := focused
+        return
+    }
 
     ; If we just lost focus, start away tracking.
     if (wasFocused && !focused) {
@@ -56,7 +64,7 @@ Tick() {
         }
     }
 
-    UpdateStatusIconTip(focused, elapsedMs, beepEveryMs)
+    UpdateStatusIconTip(focused ? "FOCUS" : "IDLE", elapsedMs, beepEveryMs)
     wasFocused := focused
 }
 
@@ -72,13 +80,20 @@ ToggleTimer() {
         TrayTip("OneNote Timer", "Paused (manual)", 2)
     }
 
-    UpdateStatusIconTip(timerOn && WinActive("ahk_exe ONENOTE.EXE"), elapsedMs, beepEveryMs)
+    UpdateStatusIconTip(timerOn && WinActive("ahk_exe ONENOTE.EXE") ? "FOCUS" : "IDLE", elapsedMs, beepEveryMs)
 }
 
-UpdateStatusIconTip(isFocused, elapsedMs, intervalMs) {
-    state := isFocused ? "FOCUS" : "IDLE"
+UpdateStatusIconTip(state, elapsedMs, intervalMs) {
     remainingMs := Max(intervalMs - elapsedMs, 0)
     A_IconTip := "OneNote Focus Timer`n" state " | " FormatDurationMs(elapsedMs) " | " FormatDurationMs(remainingMs)
+}
+
+IsBlockedByMeetingApp(procList) {
+    for procName in procList {
+        if ProcessExist(procName)
+            return true
+    }
+    return false
 }
 
 FormatDurationMs(ms) {
