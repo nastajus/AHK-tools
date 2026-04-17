@@ -7,6 +7,9 @@ SendWinH() {
 ; Optional fallback hotkey
 ^`::SendWinH()
 
+; Alternate keyboard-only fallback hotkey
+^!z::SendWinH()
+
 ; While holding Left Mouse (drag/select works normally), click Right Mouse:
 ; -> Trigger dictation AND suppress the context menu.
 ; Otherwise, Right Mouse works normally.
