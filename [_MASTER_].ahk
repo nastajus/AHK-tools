@@ -15,6 +15,7 @@ childScripts := [
     "C:\tools\ahk\StremioBoostVolume.ahk",
     "C:\tools\ahk\MouseScrollZoom.ahk",
     "C:\tools\ahk\PhotosWheelBrowse.ahk",
+    "C:\tools\ahk\SuppressAccidentalHotkeys.ahk",
 
     ;; buggy
     ; "C:\tools\ahk\BetterHistory.ahk",
