@@ -1,7 +1,17 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
-; Tracks whether right-button zooming used the wheel during the current hold.
+; Right-click + wheel controls Windows Magnifier zoom.
+; This sends the built-in Windows Magnifier shortcuts:
+;   Win+NumpadAdd -> zoom in
+;   Win+NumpadSub -> zoom out
+;
+; The script dismisses the context menu that right-click would normally open,
+; then converts wheel motion into Windows zoom while the right button is held.
+; App-specific exceptions exist where Esc or click dismissal would be unsafe.
+
+; Tracks whether the current right-button hold already triggered a Windows
+; Magnifier zoom step.
 global gUsedWheelWhileRButton := false
 
 ; Reads the active window title safely. This can fail during lock/unlock or
@@ -39,7 +49,8 @@ ShouldUseClickDismiss() {
     return IsYouTubeActive()
 }
 
-; Dismiss the context-style popup created by right-click before sending zoom keys.
+; Dismiss the context-style popup created by right-click before sending Windows
+; Magnifier zoom keys.
 ; Stremio gets no synthetic dismissal at all because both Esc and a left click
 ; can have strong player actions there.
 DismissContextLike() {
@@ -55,8 +66,8 @@ DismissContextLike() {
 }
 
 ; In Stremio, swallow the native right-click entirely. This preserves the
-; physical-button-held state for wheel zoom, but prevents the player from
-; treating the right click as a back/exit action.
+; physical-button-held state for Windows Magnifier zoom, but prevents the
+; player from treating the right click as a back/exit action.
 #HotIf IsStremioActive()
 
 RButton:: {
@@ -67,7 +78,8 @@ RButton:: {
 
 #HotIf
 
-; Start a fresh zoom gesture every time right-click goes down everywhere else.
+; Start a fresh Windows Magnifier zoom gesture every time right-click goes
+; down everywhere else.
 ; The tilde preserves native right-click behavior outside the Stremio special case.
 #HotIf !IsStremioActive()
 
@@ -79,6 +91,7 @@ RButton:: {
 #HotIf
 
 ; Only remap the wheel while the right button is physically held down.
+; Wheel up/down becomes Windows Magnifier zoom in/out.
 #HotIf GetKeyState("RButton", "P")
 
 WheelUp:: {
@@ -87,7 +100,8 @@ WheelUp:: {
         gUsedWheelWhileRButton := true
         DismissContextLike()   ; dismiss immediately on the first zoom tick
     }
-    Send "{LWin down}{NumpadAdd}{LWin up}"
+    ; Send the built-in Windows Magnifier zoom-in shortcut atomically.
+    Send "#{NumpadAdd}"
 }
 
 WheelDown:: {
@@ -96,7 +110,8 @@ WheelDown:: {
         gUsedWheelWhileRButton := true
         DismissContextLike()
     }
-    Send "{LWin down}{NumpadSub}{LWin up}"
+    ; Send the built-in Windows Magnifier zoom-out shortcut atomically.
+    Send "#{NumpadSub}"
 }
 
 #HotIf
