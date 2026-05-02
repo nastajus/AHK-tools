@@ -10,6 +10,7 @@ childScripts := [
     "C:\tools\ahk\MultiMonitorToggle_stateful.ahk",
     "C:\tools\ahk\MouseNavigationChords_mmb•lmb.ahk",
     "C:\tools\ahk\MouseNavigationOneNoteSearch_rmb,lmb.ahk",
+    "C:\tools\ahk\OneNoteFormatHotkeys.ahk",
     "C:\tools\ahk\MouseEmojiPanel.ahk",
     "C:\tools\ahk\SymbolHotkeys.ahk",
     "C:\tools\ahk\StremioBoostVolume.ahk",
