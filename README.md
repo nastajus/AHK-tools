@@ -1,6 +1,6 @@
 # AHK Tools
 
-Small AutoHotkey v2 scripts I use for mouse chords, one-handed dictation, focus timers, and various small little quality of life improvements in Window utilities.
+Small AutoHotkey v2 scripts I use for mouse chords, one-handed dictation, focus timers, and other quality-of-life improvements in Windows. A couple have become everyday gestures: holding the left mouse button and clicking the right one starts Windows speech input without reaching across the keyboard, while holding the right mouse button and scrolling turns Windows Magnifier into a quick, mouse-driven zoom control. The rest grew around the same idea—small, focused adjustments that make frequently used apps behave more naturally.
 
 ## Quick Start
 
@@ -10,7 +10,7 @@ Small AutoHotkey v2 scripts I use for mouse chords, one-handed dictation, focus 
 
 ## Scripts
 
-- `WindowsDictation.ahk`: mouse chord to trigger Windows dictation.
+- `WindowsDictation.ahk`: LButton + RButton triggers Windows speech input; Ctrl+CapsLock is a keyboard alternative.
 - `MouseEmojiPanel.ahk`: MButton + RButton opens the emoji panel.
 - `MouseNavigationOneNoteSearch_rmb,lmb.ahk`: OneNote-only RMB+LMB invokes search.
 - `MouseNavigationChords_mmb•lmb.ahk`: MButton/LButton chords for back/forward.
@@ -19,6 +19,6 @@ Small AutoHotkey v2 scripts I use for mouse chords, one-handed dictation, focus 
 - `beepsVSCode.ahk`: focus timer beeps while VS Code is active.
 - `ActivityWatchWatchdog.ahk`: monitors `aw-watcher-window_AURA`, auto-recovers on failure, and logs incidents.
 - `vscodeVignetteOveruse.ahk`: experimental click-through edge vignette that ramps with VS Code focus time.
-- `RunCaffeinateWhenOverdrive.ahk`: runs caffeine while OverDrive is active.
-- `ScrollZoomWindows.ahk`: RButton + wheel zooms Windows.
+- `OverdriveStayAwake.ahk`: temporarily keeps the display awake while focused on OverDrive.
+- `MouseScrollZoom.ahk`: RButton + wheel controls Windows Magnifier zoom.
 - `MultiMonitorToggle_stateful.ahk`: Ctrl+Alt+M toggles the primary display.
