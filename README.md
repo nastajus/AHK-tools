@@ -21,4 +21,5 @@ Small AutoHotkey v2 scripts I use for mouse chords, one-handed dictation, focus 
 - `vscodeVignetteOveruse.ahk`: experimental click-through edge vignette that ramps with VS Code focus time.
 - `OverdriveStayAwake.ahk`: temporarily keeps the display awake while focused on OverDrive.
 - `MouseScrollZoom.ahk`: RButton + wheel controls Windows Magnifier zoom.
+- `TextScaleResetWidnows.ahk`: Ctrl+Alt+Shift+F12 reapplies the saved Windows Accessibility text size.
 - `MultiMonitorToggle_stateful.ahk`: Ctrl+Alt+M toggles the primary display.
