@@ -1,25 +1,34 @@
 #Requires AutoHotkey v2.0
+#SingleInstance Force
 
 SendWinH() {
     SendInput("{LWin down}h{LWin up}")
 }
 
-; Optional fallback hotkey
-^`::SendWinH()
+; Older keyboard fallbacks, disabled because they conflict with other apps.
+; ^`::SendWinH()
 
-; Alternate keyboard-only fallback hotkey
-^!z::SendWinH()
+; Left-hand keyboard fallbacks that preserve the existing CapsLock state.
+^CapsLock::TriggerDictationPreservingCapsLock()
+#CapsLock::TriggerDictationPreservingCapsLock()
+
+TriggerDictationPreservingCapsLock() {
+    wasOn := GetKeyState("CapsLock", "T")
+    SendWinH()
+    Sleep 50
+    SetCapsLockState wasOn ? "On" : "Off"
+}
+
+; ^!z::SendWinH()
 
 ; While holding Left Mouse (drag/select works normally), click Right Mouse:
 ; -> Trigger dictation AND suppress the context menu.
 ; Otherwise, Right Mouse works normally.
+#HotIf GetKeyState("LButton", "P")
+
 $*RButton::
 {
-    if GetKeyState("LButton", "P") {
-        SendWinH()
-        return  ; suppress the right-click => no context menu
-    }
-
-    ; Normal right click when LButton is NOT held
-    SendInput("{RButton}")
+    SendWinH()
 }
+
+#HotIf
